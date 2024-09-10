@@ -3,12 +3,14 @@ const passport = require('passport');
 module.exports = app => {
   app.get(
     '/auth/google',
-    // TODO
+      passport.authenticate('google', {
+        scope:['profile','email']
+      })
   );
 
   app.get(
     '/auth/google/callback',
-    // TODO,
+    passport.authenticate('google'),
     (req, res) => {
       res.redirect('http://localhost:3000/blogs');
     }
