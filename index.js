@@ -5,6 +5,9 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const path = require('path');
 
 require("./models/User");
 require("./models/Blog");
@@ -37,6 +40,8 @@ app.use(passport.session());
 
 
 // TODO SWAGGER DOC
+const swaggerDocument = YAML.load("./swagger-doc.yml")
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 require('./routes/authRoutes')(app);
 require('./routes/blogRoutes')(app);

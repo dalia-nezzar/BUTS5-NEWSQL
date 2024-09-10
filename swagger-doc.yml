@@ -1,0 +1,103 @@
+openapi: 3.0.0
+info:
+  title: Blog API
+  description: API pour gérer les blogs et l'authentification.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:5000
+
+paths:
+  /auth/google:
+    get:
+      summary: Connexion via Google OAuth
+      responses:
+        '302':
+          description: Redirection vers Google pour l'authentification
+  /auth/google/callback:
+    get:
+      summary: Callback de Google OAuth
+      responses:
+        '302':
+          description: Redirection vers la page des blogs après authentification
+  /auth/logout:
+    get:
+      summary: Déconnexion
+      responses:
+        '302':
+          description: Redirection vers la page d'accueil après déconnexion
+  /api/current_user:
+    get:
+      summary: Récupère l'utilisateur actuel
+      responses:
+        '200':
+          description: Détails de l'utilisateur connecté
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  email:
+                    type: string
+  /api/blogs:
+    get:
+      summary: Récupère tous les blogs de l'utilisateur
+      responses:
+        '200':
+          description: Liste des blogs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    content:
+                      type: string
+    post:
+      summary: Créer un nouveau blog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                content:
+                  type: string
+      responses:
+        '201':
+          description: Blog créé
+  /api/blogs/{id}:
+    get:
+      summary: Récupère un blog spécifique
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID du blog
+      responses:
+        '200':
+          description: Blog spécifique
+        '404':
+          description: Blog non trouvé
+    delete:
+      summary: Supprimer un blog spécifique
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: ID du blog
+      responses:
+        '200':
+          description: Blog supprimé
