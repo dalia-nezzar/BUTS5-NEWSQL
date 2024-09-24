@@ -1,5 +1,5 @@
 const passport = require('passport');
-
+const loginLogger = require('../middlewares/loginLogger');
 module.exports = app => {
   app.get(
     '/auth/google',
@@ -11,6 +11,7 @@ module.exports = app => {
   app.get(
     '/auth/google/callback',
     passport.authenticate('google'),
+    loginLogger,
     (req, res) => {
       res.redirect('http://localhost:3000/blogs');
     }
